@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import {toast} from 'react-hot-toast'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import { login } from "@/services/operations/authAPI";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -22,16 +23,38 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (formData.username === "demo" && formData.password === "demo") {
+  //     toast.success("User Login Successfully")
+  //       router.push("/table");
+  //   } else {
+  //     setError("Invalid username or password.");
+  //   }
+  // };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.username === "demo" && formData.password === "demo") {
-      toast.success("User Login Successfully")
-        router.push("/table");
+    
+    // Check for valid username and password
+    if (formData.username && formData.password) {
+      try {
+        // Call the login function
+        const response = await login(formData.username, formData.password);
+        
+
+        if (response) {
+          localStorage.setItem("token", JSON.stringify(response.token));
+          // Redirect to the table page after successful login
+          router.push("/table");
+        }
+      } catch (error) {
+        setError("Invalid username or password."); // Set error if login fails
+      }
     } else {
-      setError("Invalid username or password.");
+      setError("Please enter both username and password.");
     }
   };
-
+  
   return (
     <div className="flex form-container flex-col items-center justify-center h-screen text-black bg-gray-100">
      <form onSubmit={handleSubmit}>
