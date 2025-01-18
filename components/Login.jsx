@@ -7,8 +7,6 @@ import {toast} from 'react-hot-toast'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     username: '',
