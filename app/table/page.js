@@ -12,7 +12,7 @@ const Table = () => {
   const [sortBy, setSortBy] = useState("Domain"); // Sort column
   const [sortOrder, setSortOrder] = useState("asc"); // Sort order (asc/desc)
   const [totalPages, setTotalPages] = useState(1); // Total pages
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -39,7 +39,7 @@ const Table = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/data", {
+        const response = await axios.get("https://interactive-data-table-application.onrender.com/data", {
           params: {
             page: currentPage,
             rowsPerPage,
