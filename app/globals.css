@@ -68,3 +68,35 @@ button[type='button'] {
 }
 
 
+
+.loader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+
+}
+.dot{
+  height: 25px;
+  width: 25px;
+  border-radius:50%;
+  background-color: darkcyan;
+  animation: bounce 1.5s infinite ease-in-out;
+}
+.dot1{
+  animation-delay: 0s;
+}
+.dot2{
+  animation-delay: 0.2s;
+}
+.dot3{
+  animation-delay: 0.4s;
+}
+@keyframes bounce{
+  0%,100%{
+    transform: translateY(0);
+  }
+  50%{
+    transform: translateY(-15px);
+  }
+}

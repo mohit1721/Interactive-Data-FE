@@ -3,7 +3,10 @@
 import React, { Suspense, useState, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import Loader from "@/components/Loader";
 const Table = () => {
+  const[loading,setLoading] = useState(true);
+
   const [data, setData] = useState([]); // Full data from the server
   const [filteredData, setFilteredData] = useState([]); // Data after filters/sorting/pagination
   const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
@@ -48,6 +51,7 @@ const Table = () => {
             order: sortOrder,
           },
         });
+        setLoading(false)
 
         // Log the response to check the data
         console.log("Backend Response:", response.data);
@@ -86,7 +90,8 @@ const Table = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100 h-screen">
+    <main>
+      {loading ? <Loader/> : <div className="p-8 bg-gray-100 h-screen">
       {/* Search Input */}
       <div className="mb-4">
         <input
@@ -171,7 +176,9 @@ const Table = () => {
           Next
         </button>
       </div>
-    </div>
+    </div> }
+    </main>
+    
   );
 };
 
