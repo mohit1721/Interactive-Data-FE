@@ -328,3 +328,4 @@ const handleSort = (column) => {
 };
 
 export default Table;
+export const dynamic = "force-dynamic"; // Ensures the page is rendered on the client
