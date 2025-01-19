@@ -5,7 +5,19 @@ import { useRouter } from 'next/navigation';
 
 const PrivateRoute = ({ children }) => {
   const router = useRouter();
-const token = localStorage.getItem("token")
+ const getLocalStorageValue = (key) => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(key);
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const data = getLocalStorageValue("token");
+    if (data) {
+      setToken(data);
+    }
+  }, []);
   const [loading, setLoading] = useState(true);
 // console.log("token in private route Tasklist-->", token)
   useEffect(() => {
