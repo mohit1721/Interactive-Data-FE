@@ -220,7 +220,7 @@ import Loader from "@/components/Loader";
 import { getDataLists } from "@/services/operations/dataAPI";
 import PrivateRoute from "@/components/PrivateRoute";
 
-export const dynamic = "force-static"; // Ensure dynamic rendering on the client
+// export const dynamic = "force-dynamic"; // Ensure dynamic rendering on the client
 
 const Table = () => {
   const [loading, setLoading] = useState(true);
