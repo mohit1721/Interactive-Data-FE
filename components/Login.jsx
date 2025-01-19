@@ -43,7 +43,7 @@ const Login = () => {
         
 
         if (response) {
-          localStorage.setItem("token", JSON.stringify(response.token));
+          localStorage.setItem('token', JSON.stringify(response.token));
           // Redirect to the table page after successful login
           router.push("/table");
         }

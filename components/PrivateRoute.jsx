@@ -16,7 +16,7 @@ const PrivateRoute = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = getLocalStorageValue("token");
+    const token = getLocalStorageValue('token');
     if (token) {
       setToken(token); // Set token if available
     }

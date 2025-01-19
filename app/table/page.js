@@ -246,7 +246,7 @@ const Table = () => {
   };
 
   useEffect(() => {
-    const data = getLocalStorageValue("token");
+    const data = getLocalStorageValue('token');
     if (data) {
       setToken(data);
     }
