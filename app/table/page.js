@@ -30,12 +30,16 @@ const [filters, setFilters] = useState({
   page: 1, // Default page
   rowsPerPage: 10, // Default number of rows per page
 });
-useEffect(() => {
-  // Fetch token on mount if it's not set
+const getLocalStorageValue = (key) => {
   if (typeof window !== "undefined") {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken);
+    return localStorage.getItem(key);
   }
+  return null;
+};
+useEffect(() => {
+  const data = getLocalStorageValue("key");
+    setToken(data);
+  
 }, []);
 // Update URL when filters change
 useEffect(() => {
