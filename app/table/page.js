@@ -220,10 +220,11 @@ import Loader from "@/components/Loader";
 import { getDataLists } from "@/services/operations/dataAPI";
 import PrivateRoute from "@/components/PrivateRoute";
 
+export const dynamic = "force-dynamic"; // Ensure dynamic rendering on the client
+
 const Table = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState([]); // Full data from the server
-  const [totalPages, setTotalPages] = useState(1); // Total pages
+  const [data, setData] = useState([]);
   const [filters, setFilters] = useState({
     sortBy: "Domain",
     order: "asc",
@@ -231,20 +232,26 @@ const Table = () => {
     page: 1,
     rowsPerPage: 10,
   });
+  const [totalPages, setTotalPages] = useState(1);
   const [token, setToken] = useState(null);
 
   const pathname = usePathname();
   const router = useRouter();
 
-  // Function to get token from localStorage
-  useEffect(() => {
+  const getLocalStorageValue = (key) => {
     if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem("key");
-      setToken(storedToken);
+      return localStorage.getItem(key);
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const data = getLocalStorageValue("key");
+    if (data) {
+      setToken(data);
     }
   }, []);
 
-  // Update URL when filters change
   useEffect(() => {
     const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
@@ -255,16 +262,16 @@ const Table = () => {
     router.push(`${pathname}?${params.toString()}`, undefined, { shallow: true });
   }, [filters, router, pathname]);
 
-  // Fetch data
   const fetchData = async () => {
-    if (!token) return; // Don't fetch data without token
+    if (!token) return;
+
     try {
       const fetchedData = await getDataLists(token, filters);
       if (fetchedData?.data) {
         setData(fetchedData.data);
-        setTotalPages(fetchedData.totalPages);
+        setTotalPages(fetchedData.totalPages || 1);
       } else {
-        console.error("Error: No data found in the response.");
+        console.error("No data found in the response.");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -277,26 +284,18 @@ const Table = () => {
     fetchData();
   }, [filters, token]);
 
-  // Handlers
   const handlePageChange = (newPage) => {
     setFilters((prev) => ({ ...prev, page: newPage }));
   };
 
   const handleSearch = (e) => {
-    setFilters((prev) => ({
-      ...prev,
-      search: e.target.value,
-      page: 1, // Reset to first page when search changes
-    }));
+    const searchTerm = e.target.value;
+    setFilters((prev) => ({ ...prev, search: searchTerm, page: 1 }));
   };
 
   const handleSort = (column) => {
     const order = filters.sortBy === column && filters.order === "asc" ? "desc" : "asc";
-    setFilters((prev) => ({
-      ...prev,
-      sortBy: column,
-      order: order,
-    }));
+    setFilters((prev) => ({ ...prev, sortBy: column, order }));
   };
 
   return (
@@ -305,24 +304,23 @@ const Table = () => {
         <Loader />
       ) : (
         <div className="p-8 bg-gray-100 h-screen">
-          {/* Search Input */}
           <div className="mb-4">
             <input
               type="text"
               placeholder="Search by Domain"
-              value={filters.search}
+              value={filters.search || ""}
               onChange={handleSearch}
               className="p-2 border rounded w-full"
             />
           </div>
-
-          {/* Sort Dropdown */}
           <div className="relative mb-4">
             <select
+              name="sortBy"
               value={`${filters.sortBy}_${filters.order}`}
               onChange={(e) => {
                 const [column, order] = e.target.value.split("_");
-                setFilters((prev) => ({ ...prev, sortBy: column, order: order }));
+                handleSort(column);
+                setFilters((prev) => ({ ...prev, sortBy: column, order }));
               }}
               className="border p-2 rounded"
             >
@@ -336,23 +334,13 @@ const Table = () => {
               <option value="Spam Score_desc">Spam Score: Desc</option>
             </select>
           </div>
-
-          {/* Table */}
           <table className="w-full bg-white rounded shadow">
             <thead>
               <tr>
-                <th className="cursor-pointer p-3 border" onClick={() => handleSort("Domain")}>
-                  Domain
-                </th>
-                <th className="cursor-pointer p-3 border" onClick={() => handleSort("Traffic")}>
-                  Traffic
-                </th>
-                <th className="cursor-pointer p-3 border" onClick={() => handleSort("Price")}>
-                  Price
-                </th>
-                <th className="cursor-pointer p-3 border" onClick={() => handleSort("Spam Score")}>
-                  Spam Score
-                </th>
+                <th onClick={() => handleSort("Domain")} className="p-3 border cursor-pointer">Domain</th>
+                <th onClick={() => handleSort("Traffic")} className="p-3 border cursor-pointer">Traffic</th>
+                <th onClick={() => handleSort("Price")} className="p-3 border cursor-pointer">Price</th>
+                <th onClick={() => handleSort("Spam Score")} className="p-3 border cursor-pointer">Spam Score</th>
               </tr>
             </thead>
             <tbody>
@@ -366,8 +354,6 @@ const Table = () => {
               ))}
             </tbody>
           </table>
-
-          {/* Pagination */}
           <div className="flex justify-between items-center mt-4">
             <button
               disabled={filters.page === 1}
@@ -376,9 +362,7 @@ const Table = () => {
             >
               Previous
             </button>
-            <span>
-              Page {filters.page} of {totalPages}
-            </span>
+            <span>Page {filters.page} of {totalPages}</span>
             <button
               disabled={filters.page === totalPages}
               onClick={() => handlePageChange(filters.page + 1)}
@@ -394,3 +378,4 @@ const Table = () => {
 };
 
 export default Table;
+
