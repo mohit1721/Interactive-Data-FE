@@ -212,7 +212,7 @@
 
 
 
-"use client";
+'use client'
 
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -246,7 +246,7 @@ const Table = () => {
   };
 
   useEffect(() => {
-    const data = getLocalStorageValue("key");
+    const data = getLocalStorageValue("token");
     if (data) {
       setToken(data);
     }
