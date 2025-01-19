@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation';
 
 const PrivateRoute = ({ children }) => {
   const router = useRouter();
- const getLocalStorageValue = (key) => {
+  const [token, setToken] = useState(null); // Initialize token state
+  const [loading, setLoading] = useState(true); // Set loading state
+
+  const getLocalStorageValue = (key) => {
     if (typeof window !== "undefined") {
       return localStorage.getItem(key);
     }
@@ -13,29 +16,30 @@ const PrivateRoute = ({ children }) => {
   };
 
   useEffect(() => {
-    const data = getLocalStorageValue("token");
-    if (data) {
-      setToken(data);
+    const token = getLocalStorageValue("token");
+    if (token) {
+      setToken(token); // Set token if available
     }
+    setLoading(false); // Set loading false once the check is done
   }, []);
-  const [loading, setLoading] = useState(true);
-// console.log("token in private route Tasklist-->", token)
+
   useEffect(() => {
-    if (!token) {
-      console.warn('No token found, redirecting to login...');
-      // Redirect to login page if no token
-      router.push('/');
-    } else {
-      setLoading(false); // Set loading false once the token is verified
-      router.push('/table')
+    if (!loading) {
+      if (!token) {
+        console.warn('No token found, redirecting to login...');
+        router.push('/'); // Redirect to login if no token
+      } else {
+        // You can choose to show the protected content here or redirect as needed
+        // router.push('/table'); // Uncomment if redirection to table is required
+      }
     }
-  }, [token, router]);
+  }, [loading, token, router]);
 
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with a spinner or loading indicator
+    return <div>Loading...</div>; // Placeholder for loading state
   }
 
-  return children; // Return children (protected components) if authenticated
+  return children; // Return children if authenticated
 };
 
 export default PrivateRoute;
