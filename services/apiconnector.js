@@ -1,18 +1,11 @@
-'use client'
 import axios from 'axios';
-// import { useSelector } from 'react-redux';
-// import store from '../lib/store'
-// Create a custom axios instance
 export const axiosInstance = axios.create({
   withCredentials: true, // Always include credentials for cross-origin requests
-
-
 });
 
 // Add a request interceptor to handle the token
 axiosInstance.interceptors.request.use(
   (config) => {
-  
       // const tokenFromRedux = store.getState().auth?.token;
       // Fetch token from localStorage
       const tokenFromLocalStorage = localStorage.getItem('token') 
