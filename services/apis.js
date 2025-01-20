@@ -5,5 +5,5 @@ export const authENDPOINTS={
     LOGIN_API: BASE_URL + "/auth/login",
 }
 export const dataENDPOINTS={
-    GET_DATA_API: BASE_URL+"/data"
+    GET_DATA_API: BASE_URL + "/data"
 }
