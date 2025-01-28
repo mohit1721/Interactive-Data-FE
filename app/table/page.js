@@ -299,81 +299,191 @@ const Table = () => {
   };
 
   return (
-    <PrivateRoute>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="p-8 bg-gray-100 h-screen">
-          <div className="mb-4">
-            <input
-              type="text"
-              placeholder="Search by Domain"
-              value={filters.search || ""}
-              onChange={handleSearch}
-              className="p-2 border rounded w-full"
-            />
-          </div>
-          <div className="relative mb-4">
-            <select
-              name="sortBy"
-              value={`${filters.sortBy}_${filters.order}`}
-              onChange={(e) => {
-                const [column, order] = e.target.value.split("_");
-                handleSort(column);
-                setFilters((prev) => ({ ...prev, sortBy: column, order }));
-              }}
-              className="border p-2 rounded"
-            >
-              <option value="Domain_asc">Domain: Asc</option>
-              <option value="Domain_desc">Domain: Desc</option>
-              <option value="Traffic_asc">Traffic: Asc</option>
-              <option value="Traffic_desc">Traffic: Desc</option>
-              <option value="Price_asc">Price: Asc</option>
-              <option value="Price_desc">Price: Desc</option>
-              <option value="Spam Score_asc">Spam Score: Asc</option>
-              <option value="Spam Score_desc">Spam Score: Desc</option>
-            </select>
-          </div>
-          <table className="w-full bg-white rounded shadow">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort("Domain")} className="p-3 border cursor-pointer">Domain</th>
-                <th onClick={() => handleSort("Traffic")} className="p-3 border cursor-pointer">Traffic</th>
-                <th onClick={() => handleSort("Price")} className="p-3 border cursor-pointer">Price</th>
-                <th onClick={() => handleSort("Spam Score")} className="p-3 border cursor-pointer">Spam Score</th>
+
+
+    // <PrivateRoute>
+    //   {loading ? (
+    //     <Loader />
+    //   ) : (
+    //     <div className="p-8 bg-gray-100 h-screen">
+    //       <div className="mb-4">
+    //         <input
+    //           type="text"
+    //           placeholder="Search by Domain"
+    //           value={filters.search || ""}
+    //           onChange={handleSearch}
+    //           className="p-2 border rounded w-full"
+    //         />
+    //       </div>
+    //       <div className="relative mb-4">
+    //         <select
+    //           name="sortBy"
+    //           value={`${filters.sortBy}_${filters.order}`}
+    //           onChange={(e) => {
+    //             const [column, order] = e.target.value.split("_");
+    //             handleSort(column);
+    //             setFilters((prev) => ({ ...prev, sortBy: column, order }));
+    //           }}
+    //           className="border p-2 rounded"
+    //         >
+    //           <option value="Domain_asc">Domain: Asc</option>
+    //           <option value="Domain_desc">Domain: Desc</option>
+    //           <option value="Traffic_asc">Traffic: Asc</option>
+    //           <option value="Traffic_desc">Traffic: Desc</option>
+    //           <option value="Price_asc">Price: Asc</option>
+    //           <option value="Price_desc">Price: Desc</option>
+    //           <option value="Spam Score_asc">Spam Score: Asc</option>
+    //           <option value="Spam Score_desc">Spam Score: Desc</option>
+    //         </select>
+    //       </div>
+    //       <table className="w-full bg-white rounded shadow">
+    //         <thead>
+    //           <tr>
+    //             <th onClick={() => handleSort("Domain")} className="p-3 border cursor-pointer">Domain</th>
+    //             <th onClick={() => handleSort("Traffic")} className="p-3 border cursor-pointer">Traffic</th>
+    //             <th onClick={() => handleSort("Price")} className="p-3 border cursor-pointer">Price</th>
+    //             <th onClick={() => handleSort("Spam Score")} className="p-3 border cursor-pointer">Spam Score</th>
+    //           </tr>
+    //         </thead>
+    //         <tbody>
+    //           {data.map((row, index) => (
+    //             <tr key={index} className="border">
+    //               <td className="p-3 border">{row.Domain}</td>
+    //               <td className="p-3 border">{row.Traffic}</td>
+    //               <td className="p-3 border">{row.Price}</td>
+    //               <td className="p-3 border">{row["Spam Score"]}</td>
+    //             </tr>
+    //           ))}
+    //         </tbody>
+    //       </table>
+    //       <div className="flex justify-between items-center mt-4">
+    //         <button
+    //           disabled={filters.page === 1}
+    //           onClick={() => handlePageChange(filters.page - 1)}
+    //           className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+    //         >
+    //           Previous
+    //         </button>
+    //         <span>Page {filters.page} of {totalPages}</span>
+    //         <button
+    //           disabled={filters.page === totalPages}
+    //           onClick={() => handlePageChange(filters.page + 1)}
+    //           className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+    //         >
+    //           Next
+    //         </button>
+    //       </div>
+    //     </div>
+    //   )}
+    // </PrivateRoute>
+
+// responsive
+<PrivateRoute>
+  {loading ? (
+    <Loader />
+  ) : (
+    <div className="p-4 sm:p-8 bg-gray-100 h-screen">
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by Domain"
+          value={filters.search || ""}
+          onChange={handleSearch}
+          className="p-2 border rounded w-full sm:w-1/2"
+        />
+      </div>
+      <div className="relative mb-4">
+        <select
+          name="sortBy"
+          value={`${filters.sortBy}_${filters.order}`}
+          onChange={(e) => {
+            const [column, order] = e.target.value.split("_");
+            handleSort(column);
+            setFilters((prev) => ({ ...prev, sortBy: column, order }));
+          }}
+          className="border p-2 rounded w-full sm:w-1/2"
+        >
+          <option value="Domain_asc">Domain: Asc</option>
+          <option value="Domain_desc">Domain: Desc</option>
+          <option value="Traffic_asc">Traffic: Asc</option>
+          <option value="Traffic_desc">Traffic: Desc</option>
+          <option value="Price_asc">Price: Asc</option>
+          <option value="Price_desc">Price: Desc</option>
+          <option value="Spam Score_asc">Spam Score: Asc</option>
+          <option value="Spam Score_desc">Spam Score: Desc</option>
+        </select>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full bg-white rounded shadow">
+          <thead>
+            <tr>
+              <th
+                onClick={() => handleSort("Domain")}
+                className="p-2 sm:p-3 border cursor-pointer text-sm sm:text-base"
+              >
+                Domain
+              </th>
+              <th
+                onClick={() => handleSort("Traffic")}
+                className="p-2 sm:p-3 border cursor-pointer text-sm sm:text-base"
+              >
+                Traffic
+              </th>
+              <th
+                onClick={() => handleSort("Price")}
+                className="p-2 sm:p-3 border cursor-pointer text-sm sm:text-base"
+              >
+                Price
+              </th>
+              <th
+                onClick={() => handleSort("Spam Score")}
+                className="p-2 sm:p-3 border cursor-pointer text-sm sm:text-base"
+              >
+                Spam Score
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((row, index) => (
+              <tr key={index} className="border">
+                <td className="p-2 sm:p-3 border text-sm sm:text-base">{row.Domain}</td>
+                <td className="p-2 sm:p-3 border text-sm sm:text-base">{row.Traffic}</td>
+                <td className="p-2 sm:p-3 border text-sm sm:text-base">{row.Price}</td>
+                <td className="p-2 sm:p-3 border text-sm sm:text-base">
+                  {row["Spam Score"]}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {data.map((row, index) => (
-                <tr key={index} className="border">
-                  <td className="p-3 border">{row.Domain}</td>
-                  <td className="p-3 border">{row.Traffic}</td>
-                  <td className="p-3 border">{row.Price}</td>
-                  <td className="p-3 border">{row["Spam Score"]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="flex justify-between items-center mt-4">
-            <button
-              disabled={filters.page === 1}
-              onClick={() => handlePageChange(filters.page - 1)}
-              className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-            >
-              Previous
-            </button>
-            <span>Page {filters.page} of {totalPages}</span>
-            <button
-              disabled={filters.page === totalPages}
-              onClick={() => handlePageChange(filters.page + 1)}
-              className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
-    </PrivateRoute>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex flex-col sm:flex-row justify-between items-center mt-4">
+        <button
+          disabled={filters.page === 1}
+          onClick={() => handlePageChange(filters.page - 1)}
+          className="px-3 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300 mb-2 sm:mb-0"
+        >
+          Previous
+        </button>
+        <span className="text-sm sm:text-base">
+          Page {filters.page} of {totalPages}
+        </span>
+        <button
+          disabled={filters.page === totalPages}
+          onClick={() => handlePageChange(filters.page + 1)}
+          className="px-3 py-2 bg-blue-500 text-white rounded disabled:bg-gray-300"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  )}
+</PrivateRoute>
+
+
+
+
+
   );
 };
 
